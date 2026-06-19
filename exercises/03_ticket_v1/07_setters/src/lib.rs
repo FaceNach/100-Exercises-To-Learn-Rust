@@ -11,27 +11,64 @@ pub struct Ticket {
 
 impl Ticket {
     pub fn new(title: String, description: String, status: String) -> Ticket {
-        if title.is_empty() {
-            panic!("Title cannot be empty");
-        }
-        if title.len() > 50 {
-            panic!("Title cannot be longer than 50 bytes");
-        }
-        if description.is_empty() {
-            panic!("Description cannot be empty");
-        }
-        if description.len() > 500 {
-            panic!("Description cannot be longer than 500 bytes");
-        }
-        if status != "To-Do" && status != "In Progress" && status != "Done" {
-            panic!("Only `To-Do`, `In Progress`, and `Done` statuses are allowed");
-        }
+        Self::title_cannot_be_empty(&title);
+        Self::title_cannot_be_longer_than_fifty_chars(&title);
+        Self::description_cannot_be_empty(&description);
+        Self::description_cannot_be_longer_than_500_chars(&description);
+        Self::status_must_be_valid(&status);
 
         Ticket {
             title,
             description,
             status,
         }
+    }
+
+    fn title_cannot_be_empty(new_title: &str){
+        if new_title.len() == 0{
+            panic!("Title cannot be empty")
+        }
+    }
+
+    fn title_cannot_be_longer_than_fifty_chars(new_title: &str){
+        if new_title.len() >50 {
+            panic!("Title cannot be longer than 50 bytes")
+        }
+    }
+
+    fn description_cannot_be_empty(new_description: &str){
+        if new_description.len() == 0{
+            panic!("Description cannot be empty")
+        }
+    }
+
+    fn description_cannot_be_longer_than_500_chars(new_description: &str){
+        if new_description.len() >500{
+            panic!("Description cannot be longer than 500 bytes")
+        }
+    }
+
+    fn status_must_be_valid(status: &str){
+       if status != "To-Do" && status != "In Progress" && status != "Done" {
+            panic!("Only `To-Do`, `In Progress`, and `Done` statuses are allowed");
+        }
+    }
+
+    pub fn set_title(&mut self, new_title: String){
+        Self::title_cannot_be_empty(&new_title);
+        Self::title_cannot_be_longer_than_fifty_chars(&new_title);
+        self.title = new_title;
+    }
+
+    pub fn set_description(&mut self, new_description: String){
+        Self::description_cannot_be_empty(&new_description);
+        Self::description_cannot_be_longer_than_500_chars(&new_description);
+        self.description = new_description
+    }
+
+    pub fn set_status(&mut self, new_status: String){
+        Self::status_must_be_valid(&new_status);
+        self.status = new_status
     }
 
     pub fn title(&self) -> &String {
@@ -45,6 +82,9 @@ impl Ticket {
     pub fn status(&self) -> &String {
         &self.status
     }
+
+
+  
 }
 
 #[cfg(test)]
